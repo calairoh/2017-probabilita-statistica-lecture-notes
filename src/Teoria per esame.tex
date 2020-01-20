@@ -1,0 +1,235 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\title{Probabilità e statistica}
+\author{Davide Calabrò}
+
+
+\begin{document}
+	\maketitle
+	\pagenumbering{gobble}
+	\newpage
+	
+	\newpage
+	\section*{Probabilità}
+	\subsection*{Funzione probabilità}
+	Definiamo la funzione probabilità come un terna probabilistica $(\Omega, F, P)$
+	\subsubsection*{Assiomi}
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	\subsubsection*{Proprietà}
+	\begin{enumerate}
+		\item $\forall E \in F \rightarrow P(E^c) = 1 - P(E)$
+		\item $\forall E \in F \rightarrow P(E) \leq 1$
+		\item se $E \subseteq F \rightarrow P(E) \leq P(F)$ e $P(F \ E) = P(F) - P(E)$ (prop. di monotonia)
+		\item $\forall E, F \in F \rightarrow P(E \cup F) = P(E) + P(F) - P(E \cap F)$
+	\end{enumerate}
+	\subparagraph*{Dimostrazioni}
+	\begin{enumerate}
+		\item $\Omega = E + E^c \rightarrow 1 = P(\Omega) = P(E) + P(E^c) \rightarrow P(E^c) = 1 - P(E)$
+		\item $0 \leq P(E) \leq 1 - P(E^c) \leq 1$ quindi le $P$ sono comprese tra $0$ e $1$
+		\item Definiamo $F = E \cup F \ E$ (unione disgiunta)\\
+			$P(F) = P(E) + P(F \ E) \rightarrow P(F \ E) = P(F) - P(E)$\\
+			Inoltre $P(F \ E) \geq 0$, per $a1 \rightarrow P(F) - P(E) \geq 0$, quindi $P(E) \leq P(F)$
+		\item Definiamo $E \cup F = (E \cap F) \cup [F \ (E \cap F)] \cup [E \ (E \cap F)]$ (forma disgiunta)\\
+		$P(F \cup E) = P(E \cap F) + P(F \ E \cap F) + P(E \ E \cap F) = P(E \cap F) + P(F) - P(E \cap F) + P(E) - P(E \cap F) = P(F) + P(E) - P(E \cap F)$\\
+		Intuitivamente l'idea è che se faccio $P(E)$ e $P(F)$ conto l'intersezione 2 volte.		 
+	\end{enumerate}
+	
+	\newpage
+	\section*{Definizioni e dimostrazioni}
+	\subsection{Legge debole dei grandi numeri}
+	Sia $X_1, X_2, ...$ una successione di variabili aleatoree indipendenti e identicamente distribuite (i.i.d.) con media $\mu$ e varianza $\sigma^2$ finite. Sia $S_n = X_1 + ... + X_n$ per ogni $n = 1,2,...$. Allora $\forall\epsilon > 0$
+	\begin{equation}
+		\lim\limits_{nto\infty} P\left(\left|\frac{S_n}{n} - \mu\right| > \epsilon \right)
+	\end{equation}
+	\subsubsection{Media campionaria}
+	Definiamo $\overline{X_n} := \frac{S_n}{n} = \frac{X_1 + ... + X_n}{n}$. $\overline{X_n}$ è una v.a. detta media campionaria di $X_1+...+X_n$. Dunque il risultato precedente si può scrivere come:
+	\begin{equation}
+		\lim\limits_{n\to\infty} P(|\overline{X_n}-\mu|>\epsilon) = 0
+	\end{equation}
+	\paragraph{Dimostrazione}
+	Essendo le v.a. i.i.d., per le proprietà della varianza
+	\begin{equation}
+		var(\overline{X_n}) = var(\frac{S_n}{n}) = \frac{\sum_{i=1}^{n} var(X_i)}{n} = \frac{n \cdot var(X_1)}{n^2} = \frac{\sigma^2}{n}
+	\end{equation}
+	e per le proprietà della media
+	\begin{equation}
+		E(\overline{X_n}) = E(\frac{S_n}{n}) = \frac{\sum_{i=1}^{n} E(X_i)}{n} = \frac{n E(X_1)}{n} = \mu
+	\end{equation}
+	Inoltre, la disuguaglianza di Chebyshev per una v.a. $Y$ con varianza finita dice che:
+	\begin{equation}
+		P(|Y-E(Y)|>\epsilon)\leq \frac{var(Y)}{\epsilon^2}
+	\end{equation}
+	che applicata a $Y = \overline{X_n}$
+	\begin{equation}
+		0\leq P(|\overline{X_n}-\mu|>\epsilon) \leq \frac{\sigma^2}{n\epsilon^2} \to 0 \text{ per } n\to\infty
+	\end{equation}
+	
+	\subsection{Legge forte dei grandi numeri}
+	Sia $X_1, X_2, ...$ una successione di v.a. i.i.d. che ammettono media $\mu$. Allora:
+	\begin{equation}
+		P({\omega : \lim\limits_{n\to\infty} \overline{X_n}(\omega) = \mu}) = 1
+	\end{equation}
+	dove $\overline{X_n}(\omega) = (X_1(\omega)+...+X_n(\omega))/n$.
+	La differenza rispetto alla legge debole è che qui $P$ non tende a 1, ma ci converge proprio.
+	
+	\newpage
+	\subsection{Teorema centrale del limite (TCL)}
+	Sia $X_1, X_2, ...$ una successione di v.a. i.i.d. con media $\mu$ e varianza $\sigma^2$ finite. Sia, per ogni $n=1,2,...$, $S_n = X_1+...+X_n$, allora $\forall x\in\mathbb{R}$
+	\begin{equation}
+		\lim\limits_{n\to\infty} P\left(\frac{S_n-n\mu}{\sqrt{n\sigma^2}} \leq x\right) = \Phi(x) = \int_{-\infty}^{x} \frac{1}{2\pi}e^{-\frac{u^2}{2} du}
+	\end{equation}
+	\begin{enumerate}
+		\item \begin{align}
+				E(S_n) = E(X_1+...+X_n) = n\mu\\
+				var(S_n) = var(X_1+...+X_n) = n\sigma^2\\
+				\implies \frac{S_n - n\mu}{\sqrt{n\sigma^2}} = \frac{S_n - E(S_n)}{\sqrt(var(S_n))} \text{ standardizzata}
+			\end{align}
+			La standardizzata di $S_n$ $\frac{S_n - n\mu}{\sqrt{n\sigma^2}} \approx \mathbb{N}(0,1) \implies S_n \approx \mathbb{N}(n\mu, n\sigma^2)$
+		\item \begin{equation}
+				\frac{\frac{S_n - n\mu}{n}}{\frac{\sqrt{n\sigma^2}}{n}} = \frac{\overline{X_n}-\mu}{\frac{\sigma}{\sqrt{n}}} = \frac{\overline{X_n}-E(\overline{X_n})}{\sqrt{var(\overline{X_n})}}
+			\end{equation}
+			Dunque il TCL posso anche scriverlo come
+			\begin{equation}
+				\lim\limits_{n\to\infty} P\left(\frac{\overline{X_n}-\mu}{\sigma}\sqrt{n} \leq x\right) = \Phi(x)
+			\end{equation}
+		\item Teorema di Demoivre-Laplace: supponiamo $S_n$ = numero dei successi in $n$ prove di Bernoulli, quindi
+		\begin{align}
+			S_n = X_1+...+X_n & X_i =
+			\begin{cases}
+				1 \text{ se l'i-esima prova è un successo}\\
+				0 \text{ altrimenti}
+			\end{cases}
+		\end{align}
+		\begin{equation*}
+			S_n \sim Bi(n, p)
+		\end{equation*}
+		\begin{equation*}
+			S_n: \text{ somma di n i.i.d. con } X_i \sim Be(p)
+		\end{equation*}
+		\begin{align*}
+			E(X_i)=p (=\mu) & var(X_i) = p(i-p) (=\sigma^2)
+		\end{align*}
+		\begin{equation}
+			P\left(a \leq \frac{S_n-np}{\sqrt{np(1-p)} \leq b}\right) = P\left(\frac{S_n-np}{\sqrt{np(1-p)}} \leq b\right) - P\left(\frac{S_n-np}{\sqrt{np(1-p)}} \leq a\right) \xrightarrow[n\to\infty]{TCL} \Phi(b) - \Phi(a)
+		\end{equation}
+	\end{enumerate}
+
+	\newpage
+	\subsection{Inferenza parametrica - definizioni}
+	\subsubsection{Stimatore puntuale}
+	Uno stimatore puntuale di $K(\theta)$ è una statistica $K = d_n(X_1,...,X_n)$ usata per fare inferenza su $k(\theta)$
+	\paragraph{Stimatore e stima}
+	Se $X_1=x_1,...,X_n=x_n$ è un'osservazione campionaria e $K_n = d_n(X_1,...,X_n)$ è uno STIMATORE di $K(\theta)$ allora $\widehat{K}_n = d_n(X_1,...,X_n)$ è detta STIMA di $K(\theta)$, che è circa il valore di $\widehat{K}_n$ in corrispondenza delle osservazioni. Dunque lo STIMATORE è una v.a., mentre la STIMA è un numero
+	\subsubsection{Proprietà degli stimatori puntuali}
+	$X_1,...,X_n$ campione aleatorio da $f_\theta$ e sia $K(\theta)$ una caratteristica della popolazione di densità $f_\theta$.
+	\begin{equation}
+		D_n = d(X_1,...,X_2) \text{ stimatore di } K(\theta)
+	\end{equation}
+	\paragraph{Errore quadratico medio}
+	Sia $X_1,...,X_n$ campione aleatorio estratto da $f_\theta$ e sia $D_n$ uno stimatore di $K(\theta)$. Si definisce ERRORE QUADRATICO MEDIO di $D_n$ come stimatore di $K(\theta)$ la funzione del parametro $\theta$
+	\begin{equation}
+		r(d,K(\theta)):=E_\theta[(D_n-K(\theta))^2]=E_\theta[(d(X_1,...,X_n)-K(\theta))^2]
+	\end{equation}
+	Mentre nel caso assolutamente continuo abbiamo:
+	\begin{equation}
+		r(d,K(\theta)) = \int_{\mathbb{R}^n} (d(x_1,...,x_n) - K(\theta))^2 f_\theta(x_1)...f_\theta(x_n) dx_1 ... dx_n
+	\end{equation}
+	\paragraph{Distorsione}
+	Sia $X_1,...,X_n$ campione aleatorio da $f_\theta$ e sia $D_n$ uno stimatore di $K(\theta)$. Si definisce DISTORSIONE (o bias) di $D_n = d(X_1,...,X_n)$ come stimatore di $K(\theta)$ e la funzione di $\theta$
+	\begin{equation}
+		b(d,K(\theta)) := E_\theta(D_n) - K(\theta)
+	\end{equation}
+	Lo stimatore $D_n$ si dice non distorto per $K(\theta)$ se
+	\begin{align}
+		b(d,K(\theta)) = 0, \forall\theta && (\Longleftrightarrow E_\theta(D_n) = K(\theta), \forall\theta)
+	\end{align}
+	\subparagraph{Osservazioni}
+		\begin{enumerate}
+			\item Se $D_n$ è non distorto per $K(\theta)$
+				\begin{equation*}
+					\Rightarrow r(d,K(\theta)):=E_\theta[(D_n-K(\theta))^2]=E_\theta[(D_n-E_\theta(D-n))^2] = var_\theta(D_n)
+				\end{equation*}
+			\item Decomposizione dell'errore quadratico medio di $D_n = d(X_1,...,X_n)$ come stimatore di $K(\theta)$
+				\begin{equation}
+					r(d,K(\theta)) = E_\theta[(D_n-K(\theta))^2]
+				\end{equation}
+				Sapendo che $var(Y) = E(Y^2) - E(Y)^2$, otteniamo:
+				\begin{equation}
+					= var_\theta(D_n-K(\theta)) + [E_\theta(D_n-K(\theta))]^2 = var_\theta(D_n) + [b(d,K(\theta))]^2
+				\end{equation}			
+		\end{enumerate}
+	\paragraph{Principio di invarianza degli MLE}
+	Se $\widehat{\theta}_n$ è MLE di $\theta$ e $K(\theta)$ è una caratteristica della popolazione, allora $K(\widehat{\theta}_n)$ è MLE di $K(\theta)$
+	
+	\subsubsection{Proprierà asintotiche degli stimatori}
+	\paragraph{Distorsione}
+	Una successione $(D_n=d_n(X_1,...,X_n))_n$ di stimatori di $K(\theta)$ è detta ASINTOTICAMENTE NON DISTORTA se
+	\begin{align*}
+		b(d_n,K(\theta)) = E_\theta(D_n)-K(\theta) \to 0 \text{ per } n\to\infty && 
+		(\Longleftrightarrow E_\theta(D_n)\to K(\theta))\forall\theta
+	\end{align*}
+	\paragraph{Consistenza debole}
+	Una successione $(D_n=d_n(X_1,...,X_n))_n$ di stimatori di $K(\theta)$ è detta DEBOLMENTE CONSISTENTE se $\forall\epsilon>0$ vale
+	\begin{align*}
+		P_\theta(|D_n-K(\theta)| > \epsilon) \to 0 \text{ per } n \to \infty
+	\end{align*}
+	\paragraph{Consistenza in media quadratica}
+	Una successione $(D_n=d_n(X_1,...,X_n))_n$ di stimatori di $K(\theta)$ è detta CONSISTENTE IN MEDIA QUADRATICA se
+	\begin{equation*}
+		r(d_n,K(\theta)):=E_\theta[(D_n - K(\theta))^2] \to 0 \text{ per } n \to \infty
+	\end{equation*}
+	\subparagraph{Osservazioni}
+	\begin{itemize}
+		\item Se $(D_n)_{n\geq1}$ è CONSISTENTE IN MEDIA QUADRATICA, allora la successione è anche DEBOLMENTE CONSISTENTE
+		\item Data $r(d_n,K(\theta)) = var(D_n) + [b(d_n, K(\theta))]^2$, se $var(D_n) \to 0$ per $n \to \infty$ $\forall\theta$ e $(D_n)_n$ è ASINTOTICAMENTE NON DISTORTA, allora $(D_n)_n$ è CONSISTENTE IN MEDIA QUADRATICA
+	\end{itemize}
+
+	\subsection{Quantità pivotali}
+	Si definisce QUANTITA' PIVOTALE una v.a. $Q=q(X_1,...,X_n,\theta)$ la cui distribuzione non dipende da $\theta$. Si noti che la quantità pivotale non è una statistica, in quanto dipende da $\theta$
+	
+	\newpage
+	\subsection{Verifica di un'ipotesi statistica}
+	Un'IPOTESI STATISTICA è un'affermazione su uno o più parametri delli distribuzione della popolazione.
+	\subsubsection{Regione critica e livello di significatività di un test}
+	Consideriamo una popolazione avente distribuzione $F_\theta$ che dipende da un parametro incognito $\theta$ e supponiamo di voler verificare una qualunque ipotesi su $\theta$ che chiameremo IPOTESI NULLA e che indicheremo con $\mathbb{H}_0$
+	\paragraph{Def.} Un'ipotesi statistica si dice SEMPLICE se caratterizza completamente la distribuzione della popolazione, altrimenti è detta COMPOSTA
+	\paragraph{Def.} Un test per la verifica di un'ipotesi $\mathbb{H}_0$ ha REGIONE CRITICA $C \subseteq \mathbb{R}^n$ se osservando $X_1=x_1,...,X_n=x_n$
+	\begin{itemize}
+		\item ACCETTO $\mathbb{H}_0$ se $(X_1,...,X_n)\in C$
+		\item RIFIUTO $\mathbb{H}_0$ se $(X_1,...,X_n)\notin C$
+	\end{itemize}
+	\paragraph{Errori}
+	\begin{itemize}
+		\item Commettiamo un errore di $1^a$ specie quando i dati ci portano a rifiutare $\mathbb{H}_0$ e $\mathbb{H}_0$ è corretta
+		\item Commettiamo un errore di $2^a$ specie quando i dati ci portano ad accettare $\mathbb{H}_0$ e $\mathbb{H}_0$ è falsa
+	\end{itemize}
+	\subparagraph{Attenzione}
+	L'errore di $1^a$ specie è più grave!
+	\paragraph{Livello di significatività}
+	Si definisce livello di significatività $\alpha$ quel valore tale per cui
+	\begin{equation*}
+		P(\text{errore di }1^a\text{ specie}) = P(\text{Rifiutare } \mathbb{H}_0)\leq \alpha
+	\end{equation*}
+	\paragraph{p-value}
+	Data una famiglia di test, al variare del livello di significatività, si definisce P-VALUE il più piccolo valore della significatività per cui rifuto $\mathbb{H}_0$ con i dati a disposizione. Quindi $\alpha \geq p-value \rightarrow $ rifiuto $\mathbb{H}_0$, accetto altrimenti.
+	\paragraph{Curva OC}
+	Si definisce CURVA OC del test la funzione del parametro incognito $\mu$
+	\begin{equation*}
+		B(\mu):=P_\mu(\text{accettare }\mathbb{H}_0)
+	\end{equation*}
+	quindi se $\mu$ soddisfa l'ipotesi alternativa $\mathbb{H}_1$ allora $B(\mu)$
+	\begin{equation*}
+		B(\mu) = P_\mu\left(-z_{\alpha/2} < \frac{(\overline{X_n}-\mu_0)}{\sigma_0}\sqrt{n} < z_{\alpha/2}\right)
+	\end{equation*}
+	\subparagraph{Attenzione}
+	$\frac{(\overline{X_n}-\mu_0)}{\sigma_0}\sqrt{n}$ non è una gaussiana standard, per la presenza di $\mu_0$ al posto di $\mu$
+	\paragraph{Potenza}
+	Si definisce potenza rispetto al parametro $\mu$
+	\begin{equation*}
+		\pi(\mu):=1-B(\mu)
+	\end{equation*}
+\end{document}
